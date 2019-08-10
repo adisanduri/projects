@@ -1,28 +1,45 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <v-app>
+        <v-content>
+            <v-container fill-height>
+                <v-layout row wrap justify-space-around>
+
+                    <v-flex xs3>
+                        <Menu/>
+                    </v-flex>
+
+                    <v-flex xs8>
+                        <v-layout column fill-height justify-space-between>
+                            <v-flex xs7>
+                                <Content/>
+                            </v-flex>
+                            <v-flex xs4>
+                                <ExtraContent/>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                </v-layout>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import Menu from './components/Menu.vue'
+    import Content from "./components/Content";
+    import ExtraContent from "./components/ExtraContent";
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        components: {
+            ExtraContent,
+            Content,
+            Menu
+        },
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
