@@ -13,7 +13,6 @@
             </v-list-item-subtitle>
             <v-list-item-subtitle v-else
                                   v-text="item.content.substring(0,40)+'...'">
-
             </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
@@ -36,7 +35,6 @@
             </v-icon>
         </v-list-item-action>
     </v-list-item>
-
 </template>
 
 <script>
