@@ -1,7 +1,6 @@
 <template>
     <BaseCard title="תפריט">
-
-      <v-list rounded>
+      <v-list nav>
           <v-list-item-group v-model="selectedOption" mandatory color="primary">
               <v-list-item
                       v-for="(item,i) in items"
@@ -21,37 +20,36 @@
 </template>
 
 <script>
-    import BaseCard from "./BaseCard";
-    import { EventBus } from "../event-bus";
+import BaseCard from './BaseCard.vue';
+import { EventBus } from '../event-bus';
 
-    export default {
-        name: "Menu",
-        components: {
-            BaseCard
-        },
-        methods: {
-            optionSelected: function (value) {
-                EventBus.$emit('update-title', value);
-            },
-        },
-        data: function() {
-            return {
-                selectedOption: 0,
-                items: [
-                    {option: 'דואר נכנס'},
-                    {option: 'דואר יוצא'}
-                    ],
-            };
-        },
-        created() {
-            setTimeout(() => {
-                this.optionSelected(this.items[0].option);
-            }, 0);
-        },
-    }
+export default {
+  name: 'Menu',
+  components: {
+    BaseCard,
+  },
+  methods: {
+    optionSelected(value) {
+      EventBus.$emit('update-selected-option', value);
+    },
+  },
+  data() {
+    return {
+      selectedOption: 0,
+      items: [
+        { option: 'דואר נכנס' },
+        { option: 'דואר יוצא' },
+        { option: 'דואר זבל' },
+      ],
+    };
+  },
+  created() {
+    setTimeout(() => {
+      this.optionSelected(this.items[0].option);
+    }, 0);
+  },
+};
 </script>
 
 
-
-<style>
-</style>
+<style></style>
