@@ -22,14 +22,14 @@
             <v-icon
                     v-if="favorite"
                     color="yellow"
-                    @click="favorite=!favorite"
+                    @click.stop="favorite=!favorite"
             >
                 star
             </v-icon>
             <v-icon
                     v-else
                     color="grey lighten-1"
-                    @click="favorite=!favorite"
+                    @click.stop="favorite=!favorite"
             >
                 star_border
             </v-icon>

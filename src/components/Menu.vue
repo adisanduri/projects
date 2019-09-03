@@ -31,6 +31,10 @@ export default {
   methods: {
     optionSelected(value) {
       EventBus.$emit('update-selected-option', value);
+
+      if (value !== 'דואר נכנס') {
+        EventBus.$emit('update-selected-message', undefined);
+      }
     },
   },
   data() {
