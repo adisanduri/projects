@@ -1,53 +1,47 @@
 <template>
-    <v-list-item :key="item.id"
-                 @click="messageSelected(item)">
-        <v-list-item-content>
-            <v-list-item-title v-text="item.from"></v-list-item-title>
-            <v-list-item-subtitle
-                    class="text--primary"
-                    v-text="item.title"
-            ></v-list-item-subtitle>
-            <v-list-item-subtitle
-                    v-if="item.content.length<40"
-                    v-text="item.content">
-            </v-list-item-subtitle>
-            <v-list-item-subtitle v-else
-                                  v-text="item.content.substring(0,40)+'...'">
-            </v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action>
-            <v-list-item-action-text>
-                {{item.sent | customDate(item.sent)}}
-            </v-list-item-action-text>
-            <v-icon
-                    v-if="favorite"
-                    color="yellow"
-                    @click.stop="favorite=!favorite"
-            >
-                star
-            </v-icon>
-            <v-icon
-                    v-else
-                    color="grey lighten-1"
-                    @click.stop="favorite=!favorite"
-            >
-                star_border
-            </v-icon>
-        </v-list-item-action>
-    </v-list-item>
+    <v-hover v-slot:default="{ hover }">
+        <v-list-item :key="item.id"
+                     @click="messageSelected(item)">
+            <v-list-item-content>
+                <v-list-item-title v-text="item.from"></v-list-item-title>
+                <v-list-item-subtitle
+                        class="text--primary"
+                        v-text="item.title"
+                ></v-list-item-subtitle>
+                <v-list-item-subtitle
+                        v-if="item.content.length<40"
+                        v-text="item.content">
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else
+                                      v-text="item.content.substring(0,40)+'...'">
+                </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+                <v-list-item-action-text>
+                    {{item.sent | customDate(item.sent)}}
+                </v-list-item-action-text>
+                <ActionButtons v-bind:hover="hover"/>
+            </v-list-item-action>
+        </v-list-item>
+    </v-hover>
 </template>
 
 <script>
 import moment from 'moment';
 import { EventBus } from '../event-bus';
+import ActionButtons from './ActionButtons.vue';
 
 export default {
   name: 'Message',
+  components: { ActionButtons },
   props: {
     item: Object,
   },
   data() {
-    return { favorite: false };
+    return {
+      favorite: false,
+      colorActionBtn: 'gray',
+    };
   },
   methods: {
     messageSelected(value) {
@@ -89,4 +83,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
