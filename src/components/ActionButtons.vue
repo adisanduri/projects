@@ -1,17 +1,19 @@
 <template>
-    <div>
-        <Action v-bind:click="()=>{}" v-bind:hover="hover" icon="edit"/>
-        <Action v-bind:click="()=>{}" v-bind:hover="hover" icon="delete"/>
-        <Action
-                v-bind:click="()=>{favorite=!favorite}"
-                v-bind:hover="true"
-                v-bind:icon="favorite? 'star' : 'star_border'"
-                v-bind:colorIcon="favorite? 'yellow' : 'grey'"
-        />
-    </div>
+    <v-layout>
+        <div :key="action.id"
+             v-for="action in actions">
+            <Action
+                    @click="action.click(message)"
+                    :action="action"
+                    :message="message"
+                    :hover="hover"
+            />
+        </div>
+    </v-layout>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import Action from './Action.vue';
 
 export default {
@@ -19,15 +21,17 @@ export default {
   components: { Action },
   props: {
     hover: Boolean,
+    message: Object,
+    actions: Array,
   },
-  data() {
-    return {
-      favorite: false,
-    };
+  methods: {
+    ...mapMutations([
+      'addItemToList',
+      'removeItemByIdFromList',
+    ]),
   },
 };
 </script>
 
 <style scoped>
-
 </style>

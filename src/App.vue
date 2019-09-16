@@ -54,10 +54,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Menu from './components/Menu.vue';
 import Content from './components/Content.vue';
 import ExtraContent from './components/ExtraContent.vue';
-import { EventBus } from './event-bus';
 
 export default {
   name: 'app',
@@ -66,16 +66,13 @@ export default {
     Content,
     Menu,
   },
+  computed: {
+    ...mapState(['selectedOption']),
+  },
   data() {
     return {
-      selectedOption: '',
       dialog: false,
     };
-  },
-  created() {
-    EventBus.$on('update-selected-option', (newTitle) => {
-      this.selectedOption = newTitle;
-    });
   },
 };
 </script>

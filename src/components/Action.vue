@@ -1,14 +1,15 @@
 <template>
-    <v-btn v-if="hover"
+    <v-btn
+           v-if="action.parmanent ? true : hover"
            small
            icon
            dark
            @mouseover="colorActionBtn='primary'"
            @mouseleave="colorActionBtn='grey'"
-           @click.stop="click">
-        <v-icon :color="colorIcon ? colorIcon : colorActionBtn"
+           @click.stop="$listeners.click">
+        <v-icon :color="action.colorIcon(this.message.favourite, colorActionBtn)"
         >
-            {{icon}}
+            {{action.icon(this.message.favourite)}}
         </v-icon>
     </v-btn>
 </template>
@@ -17,10 +18,12 @@
 export default {
   name: 'Action',
   props: {
+    action: {
+      type: Object,
+      default: () => ({}),
+    },
     hover: Boolean,
-    click: Function,
-    icon: String,
-    colorIcon: String,
+    message: Object,
   },
   data() {
     return {

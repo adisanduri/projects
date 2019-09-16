@@ -14,29 +14,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import BaseCard from './BaseCard.vue';
-import { EventBus } from '../event-bus';
 
 export default {
   name: 'ExtraContent',
   components: {
     BaseCard,
   },
-  data() {
-    return {
-      selectedMessage: null,
-    };
-  },
-  created() {
-    EventBus.$on('update-selected-message', (newMessage) => {
-      if (this.selectedMessage
-              && newMessage
-              && newMessage.id === this.selectedMessage.id) {
-        this.selectedMessage = undefined;
-      } else {
-        this.selectedMessage = newMessage;
-      }
-    });
+  computed: {
+    ...mapState(['selectedMessage']),
   },
 };
 </script>

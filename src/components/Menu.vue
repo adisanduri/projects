@@ -5,7 +5,6 @@
               <v-list-item
                       v-for="(item,i) in items"
                       :key="i"
-                      @click="optionSelected(item.option)"
               >
                   <v-list-item-content>
                       <v-list-item-content
@@ -19,26 +18,32 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import BaseCard from './BaseCard.vue';
-import { EventBus } from '../event-bus';
 
 export default {
   name: 'Menu',
   components: {
     BaseCard,
   },
-  methods: {
-    optionSelected(value) {
-      EventBus.$emit('update-selected-option', value);
-
-      if (value !== 'דואר נכנס') {
-        EventBus.$emit('update-selected-message', undefined);
-      }
+  created() {
+    setTimeout(() => {
+      this.setSelectedOption(this.items[0].option);
+    }, 0);
+  },
+  computed: {
+    ...mapState(['selectedOption']),
+    selectedOption: {
+      get() {
+        return this.$store.selectedOption;
+      },
+      set(index) {
+        this.optionSelected(this.items[index].option);
+      },
     },
   },
   data() {
     return {
-      selectedOption: 0,
       items: [
         { option: 'דואר נכנס' },
         { option: 'דואר יוצא' },
@@ -46,10 +51,18 @@ export default {
       ],
     };
   },
-  created() {
-    setTimeout(() => {
-      this.optionSelected(this.items[0].option);
-    }, 0);
+  methods: {
+    ...mapMutations([
+      'setSelectedMessage',
+      'setSelectedOption',
+    ]),
+    optionSelected(value) {
+      this.setSelectedOption(value);
+
+      if (value !== 'דואר נכנס') {
+        this.setSelectedMessage(undefined);
+      }
+    },
   },
 };
 </script>

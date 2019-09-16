@@ -1,7 +1,10 @@
 <template>
-    <v-hover v-slot:default="{ hover }">
+    <v-hover v-slot="{ hover }">
         <v-list-item :key="item.id"
-                     @click="messageSelected(item)">
+                     @click="(selectedMessage != undefined &&
+                     item.id == selectedMessage.id) ?
+                     setSelectedMessage(undefined) :
+                     setSelectedMessage(item)">
             <v-list-item-content>
                 <v-list-item-title v-text="item.from"></v-list-item-title>
                 <v-list-item-subtitle
@@ -20,7 +23,11 @@
                 <v-list-item-action-text>
                     {{item.sent | customDate(item.sent)}}
                 </v-list-item-action-text>
-                <ActionButtons v-bind:hover="hover"/>
+                <ActionButtons
+                        v-bind:hover="hover"
+                        v-bind:message="item"
+                        v-bind:actions="actionButtonsConfig"
+                />
             </v-list-item-action>
         </v-list-item>
     </v-hover>
@@ -28,7 +35,7 @@
 
 <script>
 import moment from 'moment';
-import { EventBus } from '../event-bus';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import ActionButtons from './ActionButtons.vue';
 
 export default {
@@ -39,14 +46,37 @@ export default {
   },
   data() {
     return {
-      favorite: false,
-      colorActionBtn: 'gray',
+      actionButtonsConfig: [
+        {
+          icon: () => 'replay',
+          click: () => {},
+          colorIcon: (favourite, color) => (color),
+          parmanent: false,
+        },
+        {
+          icon: () => 'delete',
+          click: (message) => {
+            this.$store.commit('addItemToList', { listName: 'trashboxMessages', message });
+            this.$store.commit('removeItemByIdFromList', { listName: 'inboxMessages', message });
+          },
+          colorIcon: (favourite, color) => (color),
+          parmanent: false,
+        },
+        {
+          icon: favourite => (favourite ? 'star' : 'star_border'),
+          colorIcon: favourite => (favourite ? 'yellow' : 'grey'),
+          parmanent: true,
+          click: () => this.toggleFavourite(this.item.id),
+        },
+      ],
     };
   },
+  computed: {
+    ...mapState(['selectedMessage']),
+  },
   methods: {
-    messageSelected(value) {
-      EventBus.$emit('update-selected-message', value);
-    },
+    ...mapMutations(['setSelectedMessage']),
+    ...mapActions(['toggleFavourite']),
   },
   filters: {
     customDate(value) {
